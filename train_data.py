@@ -56,7 +56,7 @@ def main(argv):
         n_classes=3)
 
     classifier.train(
-        input_fn=lambda: pandas_input_fn(train_x, y=train_y, batch_size=args.batch_size),
+        input_fn=lambda: pandas_input_fn(train_x, y=train_y, batch_size=args.batch_size, shuffle=False),
         steps=args.train_steps)
 
 
