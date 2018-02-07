@@ -47,7 +47,7 @@ def main(argv):
     xuzhou_feature_columns = []
 
     for i, colname in enumerate(train_x.columns):
-        xuzhou_feature_columns.append(colname)
+        xuzhou_feature_columns.append(tf.feature_column.numeric_column(key=colname))
 
     classifier = tf.estimator.DNNClassifier(
         feature_columns=xuzhou_feature_columns,
