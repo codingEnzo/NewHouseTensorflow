@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
-
 import argparse
+from datetime import datetime
 
 import pandas as pd
 import tensorflow as tf
@@ -9,7 +8,6 @@ from tensorflow.python.estimator.inputs.pandas_io import pandas_input_fn
 
 from utils.multiapplier import mg, apply_by_multiprocessing
 from utils.normalizer import norm_by_mean
-
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--batch_size', default=1, type=int, help='batch size')
