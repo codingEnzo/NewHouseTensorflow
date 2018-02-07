@@ -50,3 +50,8 @@ def main():
     classifier.train(
         input_fn=lambda: pandas_input_fn(train_x, train_y),
         steps=1)
+
+
+if __name__ == '__main__':
+    tf.logging.set_verbosity(tf.logging.INFO)
+    tf.app.run(main)
