@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import argparse
-from datetime import datetime
 
 import pandas as pd
 import tensorflow as tf
@@ -31,8 +30,9 @@ def load_data():
     tsf_data = apply_by_multiprocessing(tsf_data, norm_by_mean, axis=1, workers=cpu_count)
 
     # 归一化数据留存
-    dupe = pd.concat([ifo_data, tsf_data], axis=1)
-    dupe.to_csv('csv/clean_data_sample_normalize_{}'.format(datetime.now()))
+    # from datetime import datetime
+    # dupe = pd.concat([ifo_data, tsf_data], axis=1)
+    # dupe.to_csv('csv/clean_data_sample_normalize_{}'.format(datetime.now()))
 
     # 训练样本
     train_x = tsf_data
@@ -46,6 +46,8 @@ def main(argv):
     train_x, train_y = load_data()
     xuzhou_feature_columns = []
 
+    input_fn = pandas_input_fn(train_x, y=train_y, batch_size=args.batch_size, shuffle=False)
+
     for i, colname in enumerate(train_x.columns):
         xuzhou_feature_columns.append(tf.feature_column.numeric_column(key=colname))
 
@@ -56,7 +58,7 @@ def main(argv):
         n_classes=3)
 
     classifier.train(
-        input_fn=lambda: pandas_input_fn(train_x, y=train_y, batch_size=args.batch_size, shuffle=False),
+        input_fn=lambda: input_fn(),
         steps=args.train_steps)
 
 
