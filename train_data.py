@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
+import argparse
+
 import pandas as pd
 import tensorflow as tf
 from tensorflow.python.estimator.inputs.pandas_io import pandas_input_fn
 
 from utils.multiapplier import mg, apply_by_multiprocessing
 from utils.normalizer import norm_by_mean
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--batch_size', default=1, type=int, help='batch size')
+parser.add_argument('--train_steps', default=30, type=int,
+                    help='number of training steps')
 
 
 def load_data():
@@ -34,7 +42,9 @@ def load_data():
     return train_x, train_y
 
 
-def main():
+def main(argv):
+    args = parser.parse_args(argv[1:])
+
     train_x, train_y = load_data()
     xuzhou_feature_columns = []
 
@@ -48,8 +58,8 @@ def main():
         n_classes=3)
 
     classifier.train(
-        input_fn=lambda: pandas_input_fn(train_x, train_y),
-        steps=1)
+        input_fn=lambda: pandas_input_fn(train_x, y=train_y, batch_size=args.batch_size),
+        steps=args.train_steps)
 
 
 if __name__ == '__main__':
